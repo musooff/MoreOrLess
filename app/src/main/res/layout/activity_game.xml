@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:clipChildren="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_root"
+    android:background="@drawable/splash_higher_lower"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/adView">
+        <com.footballnukes.moreorlessfootballers.beautifiers.CustomRecyclerView
+            android:id="@+id/rl_game_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:clipChildren="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true">
+            <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                android:textSize="18sp"
+                android:id="@+id/tv_high_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:text="Highscore: 0"
+                android:layout_alignParentLeft="true"/>
+            <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                android:textSize="18sp"
+                android:id="@+id/tv_score_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Score: 0"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <com.footballnukes.moreorlessfootballers.beautifiers.VSView
+            android:id="@+id/vs_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/ll_youtube"
+        android:orientation="horizontal">
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tv_youtube_info"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Subscribe to us" />
+
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tv_youtube_link"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
+            android:text=" /theballboy"
+            android:drawableLeft="@drawable/youtube_icon"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/ll_facebook"
+        android:orientation="horizontal">
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tv_facebook_info"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Like us" />
+
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tv_facebook_link"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
+            android:text=" /ballboytv"
+            android:drawableLeft="@drawable/facebook_icon"/>
+    </LinearLayout>
+
+</LinearLayout>

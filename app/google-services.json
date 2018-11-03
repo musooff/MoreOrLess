@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "648394199272",
+    "firebase_url": "https://moreorlessfootballers.firebaseio.com",
+    "project_id": "moreorlessfootballers",
+    "storage_bucket": "moreorlessfootballers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648394199272:android:c4014dff5cbb800c",
+        "android_client_info": {
+          "package_name": "com.footballnukes.moreorlessfootballers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648394199272-qfgsmamkr9u9bsfto8aoee9c6nkulh7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1QTsgzQjtv60Rd1ppMlnjlGaccoQ0TAA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

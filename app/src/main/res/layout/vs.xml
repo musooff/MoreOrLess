@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_vs"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:id="@+id/fv1"
+        android:background="@drawable/vs_background"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:textSize="18sp"
+            android:textColor="@color/cardview_dark_background"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="vs"
+            android:textStyle="bold" />
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fv2"
+        android:visibility="visible"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/iv_answer"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </FrameLayout>
+</RelativeLayout>

@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Instagram",
+    "purchased": true,
+    "description": "Ronaldo vs Neymar",
+    "score": 0,
+    "imageUrl": "category_images_instagram"
+  },
+  {
+    "name": "Market Value",
+    "purchased": true,
+    "description": "Messi vs Neymar",
+    "score": 0,
+    "imageUrl": "category_images_value"
+  },
+  {
+    "name": "Goals This Season",
+    "purchased": true,
+    "description": "Ronaldo vs Messi",
+    "score": 0,
+    "imageUrl": "category_images_goals"
+  },
+  {
+    "name": "Age",
+    "purchased": true,
+    "description": "Zlatan vs Rooney",
+    "score": 0,
+    "imageUrl": "category_images_age"
+  },
+  {
+    "name": "Twitter",
+    "purchased": false,
+    "description": "Ronaldo vs Neymar",
+    "score": 0,
+    "imageUrl": "category_images_twitter"
+  },
+  {
+    "name": "Jersey Number",
+    "purchased": false,
+    "description": "Neymar vs Mbappe",
+    "score": 0,
+    "imageUrl": "category_images_jersey"
+  },
+  {
+    "name": "Facebook",
+    "purchased": false,
+    "description": "Kane vs Pogba",
+    "score": 0,
+    "imageUrl": "category_images_facebook"
+  },
+  {
+    "name": "Appearance",
+    "purchased": false,
+    "description": "Suarez vs Bale",
+    "score": 0,
+    "imageUrl": "category_images_appearance"
+  },
+  {
+    "name": "FIFA Ranking",
+    "purchased": false,
+    "description": "Neuer vs De Gea",
+    "score": 0,
+    "imageUrl": "category_images_fifa"
+  }
+]

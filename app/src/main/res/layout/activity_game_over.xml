@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gif"
+        android:scaleType="fitXY"/>
+
+    <View android:background="@drawable/splash_higher_lower"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout 
+        android:gravity="center"
+        android:id="@+id/ll_main"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:gravity="center|top"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/ll_1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.0">
+            <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Your Score:"
+                android:textStyle="bold" />
+            <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                android:textSize="100sp"
+                android:textColor="@color/yellow"
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textStyle="bold" />
+            <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/tv_score_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp" />
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/ll_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_face"
+                    android:background="@drawable/facebook_background"
+                    android:padding="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/facebook"/>
+                    <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share" />
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_tweet"
+                    android:background="@drawable/twitter_background"
+                    android:padding="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/twitter"/>
+                    <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tweet" />
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_other"
+                    android:background="@drawable/share_other_background"
+                    android:padding="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/share"/>
+                    <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Other" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="2.0">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+                <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+                    android:textSize="18sp"
+                    android:textColor="@color/yellow"
+                    android:id="@+id/keep_going"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:visibility="visible"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Keep Going?"
+                    android:drawableLeft="@drawable/ic_play_keep_going"
+                    android:paddingLeft="15dp"
+                    android:layout_centerInParent="true"  />
+            </RelativeLayout>
+            <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+                android:textSize="18sp"
+                android:textColor="@color/primary"
+                android:id="@+id/bt_restart"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Restart Again"
+                android:drawableRight="@drawable/ic_restart_drawable" />
+            <include layout="@layout/social_links"></include>
+        </LinearLayout>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/game_over_banner">
+        </com.google.android.gms.ads.AdView>
+    </LinearLayout>
+</RelativeLayout>
