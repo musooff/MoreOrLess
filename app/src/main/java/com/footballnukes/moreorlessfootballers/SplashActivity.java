@@ -8,15 +8,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import com.footballnukes.moreorlessfootballers.game.Player;
-import com.footballnukes.moreorlessfootballers.game.Player2;
 import com.footballnukes.moreorlessfootballers.model.AppPreference;
 import com.footballnukes.moreorlessfootballers.room.AppDatabase;
 import com.footballnukes.moreorlessfootballers.room.dao.PlayerDao;
@@ -34,7 +31,7 @@ import java.util.List;
  * Created by moshe on 27/04/2017.
  */
 
-public class NewSplashActivity extends Activity {
+public class SplashActivity extends Activity {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference playersRef = mRootRef.child("players");

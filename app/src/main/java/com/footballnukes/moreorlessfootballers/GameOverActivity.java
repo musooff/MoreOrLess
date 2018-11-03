@@ -1,5 +1,6 @@
 package com.footballnukes.moreorlessfootballers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,12 +10,17 @@ import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.footballnukes.moreorlessfootballers.model.AppPreference;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
 
@@ -27,22 +33,18 @@ import pl.droidsonroids.gif.GifImageView;
  * Created by moshe on 20/04/2017.
  */
 
-public class GameOverActivity extends GameActivity {
+public class GameOverActivity extends Activity {
 
-    final public UnityAdsListener unityAdsListener = new UnityAdsListener();
+    public static String FACEBOOK_URL = "https://www.facebook.com/ballboytv";
+    public static String FACEBOOK_PAGE_ID = "634136046769198";
 
     GameButton go_playAgain,go_keepGoing;
     LinearLayout go_share,go_tweet,go_other;
     FontTextView go_score;
-    int go_last_id, go_int_score;
-    //Integer[] win_gifs = {R.drawable.win_1,R.drawable.win_2,R.drawable.win_3,R.drawable.win_4,R.drawable.win_5, R.drawable.win_6, R.drawable.win_7};
-    //Integer[] lose_gifs = {R.drawable.fail_1,R.drawable.fail_2,R.drawable.fail_3,R.drawable.fail_4,R.drawable.fail_5};
-    GifImageView gifImageView;
+    int go_int_score;
     InterstitialAd mInterstitialAd;
-
-
-    LinearLayout ll_main;
     LinearLayout ll_youtube,ll_facebook;
+    private RewardedVideoAd mRewardedVideoAd;
 
     public static String GameURL = "https://play.google.com/store/apps/details?id=com.footballnukes.moreorlessfootballers";
 
@@ -51,189 +53,127 @@ public class GameOverActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
 
-        ll_main = (LinearLayout)findViewById(R.id.ll_main);
-        CountDownTimer countDownTimer  = new CountDownTimer(2000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+        manageAds();
 
-            }
-
-            @Override
-            public void onFinish() {
-                ll_main.setVisibility(View.VISIBLE);
-            }
-        };
-        //countDownTimer.start();
-
-        UnityAds.initialize(this, "1397555", unityAdsListener);
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.ad_unit_id));
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-                beginPlayingGame();
-            }
-        });
-
-
-
-        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.app_ads_id));
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        if (sharedPreferences.getBoolean("paid",false)){
-            mAdView.setVisibility(View.GONE);
-        }
-        else {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-            requestNewInterstitial();
-        }
-
-        go_playAgain = (GameButton)findViewById(R.id.bt_restart);
-        go_keepGoing = (GameButton)findViewById(R.id.keep_going);
-
-        go_share = (LinearLayout) findViewById(R.id.ll_share);
-        go_tweet = (LinearLayout)findViewById(R.id.ll_tweet);
-        go_other = (LinearLayout)findViewById(R.id.ll_other);
-
-        gifImageView = (GifImageView)findViewById(R.id.gif);
-
-        go_score = (FontTextView)findViewById(R.id.tv_score);
+        go_playAgain = findViewById(R.id.bt_restart);
+        go_keepGoing = findViewById(R.id.keep_going);
+        go_share = findViewById(R.id.ll_share);
+        go_tweet = findViewById(R.id.ll_tweet);
+        go_other = findViewById(R.id.ll_other);
+        go_score = findViewById(R.id.tv_score);
 
         Bundle extras = getIntent().getExtras();
-        go_last_id = extras.getInt("previous");
         go_int_score = extras.getInt("score");
         go_score.setText(go_int_score+"");
 
 
-/*
-        Random random = new Random();
-        if (go_int_score >= 5){
-            gifImageView.setImageResource(win_gifs[random.nextInt(7)]);
-        }
-        else {
-            gifImageView.setImageResource(lose_gifs[random.nextInt(5)]);
-
-        }
-        */
-
-        go_playAgain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                } else {
-                    beginPlayingGame();
-                }
+        go_playAgain.setOnClickListener(v -> {
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            } else {
+                beginPlayingGame("playAgain");
             }
         });
 
-        go_keepGoing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UnityAds.isReady()) {
-                    UnityAds.show(GameOverActivity.this);
-                    onBackPressed();
-
-                }
+        go_keepGoing.setOnClickListener(v -> {
+            if (mRewardedVideoAd.isLoaded()) {
+                mRewardedVideoAd.show();
+            }else {
+                Toast.makeText(getApplicationContext(), "Ad hasn't been loaded, Try again later", Toast.LENGTH_SHORT).show();
             }
         });
 
-        go_tweet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                share(getApplicationContext(),score,"com.twitter.android");
-            }
-        });
+        go_tweet.setOnClickListener(v -> share(getApplicationContext(),go_int_score,"com.twitter.android"));
 
-        go_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                share(getApplicationContext(),score,"com.facebook.katana");
-            }
-        });
+        go_share.setOnClickListener(v -> share(getApplicationContext(),go_int_score,"com.facebook.katana"));
 
-        go_other.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                share(getApplicationContext(),score,null);
+        go_other.setOnClickListener(v -> share(getApplicationContext(),go_int_score,null));
 
-            }
+        ll_facebook = findViewById(R.id.ll_facebook);
+        ll_facebook.setOnClickListener(v -> {
+            Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+            String facebookUrl = getFacebookPageURL(getApplicationContext());
+            facebookIntent.setData(Uri.parse(facebookUrl));
+            startActivity(facebookIntent);
         });
-
-        ll_facebook = (LinearLayout)findViewById(R.id.ll_facebook);
-        ll_facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
-                String facebookUrl = getFacebookPageURL(getApplicationContext());
-                facebookIntent.setData(Uri.parse(facebookUrl));
-                startActivity(facebookIntent);
-            }
-        });
-        ll_youtube = (LinearLayout)findViewById(R.id.ll_youtube);
-        ll_youtube.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/c/footballnukes")));
-            }
-        });
-
+        ll_youtube = findViewById(R.id.ll_youtube);
+        ll_youtube.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/c/theballboy"))));
 
     }
 
-    private void beginPlayingGame() {
-        Intent restart = new Intent(GameOverActivity.this,GameActivity.class);
-        startActivity(restart);
-        setResult(58);
+    private void manageAds(){
+        // video ads
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                beginPlayingGame("videoAdWatched");
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+
+            }
+        });
+        mRewardedVideoAd.loadAd(getString(R.string.video_ad_id), new AdRequest.Builder().build());
+
+
+        // inter ads
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.inter_ad_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                beginPlayingGame("interAddClosed");
+            }
+        });
+
+        // banner ads
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.app_ads_id));
+        AdView mAdView = findViewById(R.id.adView);
+        mAdView.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void beginPlayingGame(String source) {
+        Intent restart = new Intent();
+        restart.putExtra("source", source);
+        setResult(58, restart);
         GameOverActivity.this.finish();
     }
 
-    private class UnityAdsListener implements IUnityAdsListener{
 
-        @Override
-        public void onUnityAdsReady(String s) {
-
-        }
-
-        @Override
-        public void onUnityAdsStart(String s) {
-
-        }
-
-        @Override
-        public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
-            watched();
-
-        }
-
-        @Override
-        public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
-
-        }
-    }
-
-    public void watched(){
-        editor.putBoolean("watched",true);
-        editor.apply();
-
-    }
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("91EA9768AB496C541B00CBD148B25849")
-                .build();
-
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    public static String FACEBOOK_URL = "https://www.facebook.com/footballnukes";
-    public static String FACEBOOK_PAGE_ID = "634136046769198";
-
-    //method to get the right URL to use in the intent
     public String getFacebookPageURL(Context context) {
         PackageManager packageManager = context.getPackageManager();
         try {
@@ -269,4 +209,9 @@ public class GameOverActivity extends GameActivity {
         context.startActivity(sendIntent);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        beginPlayingGame("onBackPressed");
+    }
 }

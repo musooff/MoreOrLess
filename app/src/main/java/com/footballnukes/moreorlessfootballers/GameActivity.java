@@ -11,6 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
 import com.footballnukes.moreorlessfootballers.game.GameItem;
+import com.footballnukes.moreorlessfootballers.game.Player;
+import com.footballnukes.moreorlessfootballers.model.AppPreference;
+import com.footballnukes.moreorlessfootballers.room.AppDatabase;
+import com.footballnukes.moreorlessfootballers.room.dao.PlayerDao;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +47,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import java.util.Random;
 
 import com.footballnukes.moreorlessfootballers.beautifiers.FontTextView;
@@ -52,24 +64,21 @@ public class GameActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     VSView vsView;
     ArrayList<GameItem> gameItems;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     String category;
 
-    String[] names;
-    String[] subNames;
-    String[] imageUrls;
-    //String[] beautyImageUrls;
-    String[] credits;
-    String[] whatToCompare;
+    List<String> names = new ArrayList<>();
+    List<String> subNames = new ArrayList<>();
+    List<String> imageUrls = new ArrayList<>();
+    List<String> credits = new ArrayList<>();
+    List<Integer> whatToCompare = new ArrayList<>();
 
     int prev = 0;
     String prev_str = null;
-    ImageView imageViewCard;
-    GameAdapter2 gameAdapter;
+    GameAdapter gameAdapter;
 
     FontTextView tv_number_2, tv_score_main,tv_high_score;
-    int num_1,num_2, score =0,highScore =0;
+    int num_1,num_2;
+    int score = 0,highScore = 0;
 
     RelativeLayout rl;
 
@@ -77,122 +86,133 @@ public class GameActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        
+        
 
-        sharedPreferences = this.getSharedPreferences("Download Data",0);
-        editor = sharedPreferences.edit();
+        rl = findViewById(R.id.rl_root);
+        category = getAppPref().getLastGame();
 
-        rl = (RelativeLayout)findViewById(R.id.rl_root);
+        getGameData()
+                .subscribe(
+                        players -> { 
+                            for (Player player: players){
+                                names.add(player.getName());
+                                imageUrls.add(player.getWikipediaImageUrl());
+                                credits.add(player.getAuthorName());
+                                switch (category){
+                                    case "Market Value":
+                                        whatToCompare.add((int) player.getValue());
+                                        subNames.add(player.getClub());
+                                        break;
+                                    case "Age":
+                                        whatToCompare.add(player.getAge());
+                                        subNames.add(player.getClub());
+                                        break;
+                                    case "Goals This Season":
+                                        whatToCompare.add(player.getGoals());
+                                        subNames.add(player.getClub());
+                                        break;
+                                    case "Instagram":
+                                        whatToCompare.add((int) player.getInstagramFollowers());
+                                        subNames.add("@"+player.getInstagramId());
+                                        break;
+
+                                }
+                            }
+                            startGame();
+                            },
+                        throwable -> Log.e("GAME", throwable.getMessage()));
 
 
-        category = sharedPreferences.getString("last","None");
+        vsView = findViewById(R.id.vs_view);
+        tv_high_score = findViewById(R.id.tv_high_score);
+        tv_score_main = findViewById(R.id.tv_score_main);
+        recyclerView = findViewById(R.id.rl_game_item);
 
-        names = sharedPreferences.getString("Data Names",null).split(",");
+    }
 
-        imageUrls = sharedPreferences.getString("Data WikiImages",null).split("arusak");
-        //beautyImageUrls = sharedPreferences.getString("Data BeautyImageUrls",null).split(",");
-        credits = sharedPreferences.getString("Data WikiImageAuthors",null).split("arusak");
+    private void defaults(){
+        score = 0;
+        vsView.bring_vs();
+        tv_score_main.setText("Score: "+score);
+    }
 
-
-        switch (category){
-            case "Market Value":
-                whatToCompare = sharedPreferences.getString("Data Values",null).split(",");
-                subNames = sharedPreferences.getString("Data Clubs",null).split(",");
-                break;
-            case "Age":
-                whatToCompare = sharedPreferences.getString("Data Ages",null).split(",");
-                subNames = sharedPreferences.getString("Data Clubs",null).split(",");
-                break;
-            case "Goals This Season":
-                whatToCompare = sharedPreferences.getString("Data GoalsThisSeason",null).split(",");
-                subNames = sharedPreferences.getString("Data Clubs",null).split(",");
-                break;
-            case "Instagram":
-                whatToCompare = sharedPreferences.getString("Data InstaNumbers",null).split(",");
-                subNames = sharedPreferences.getString("Data InstaIDs","null").split(",");
-                break;
-
-        }
-
-
-        vsView = (VSView)findViewById(R.id.vs_view);
-        tv_high_score = (FontTextView)findViewById(R.id.tv_high_score);
-        tv_score_main = (FontTextView)findViewById(R.id.tv_score_main);
-
-        recyclerView = (RecyclerView) findViewById(R.id.rl_game_item);
-        gameItems= new ArrayList<GameItem>();
-
+    private void startGame(){
+        defaults();
+        gameItems= new ArrayList<>();
         Random rr = new Random();
-        int randomNumber = rr.nextInt(names.length);
-        while (subNames[randomNumber].equals("null")){
-            randomNumber = rr.nextInt(names.length);
+        int randomNumber = rr.nextInt(names.size());
+        while (subNames.get(randomNumber).equals("null")){
+            randomNumber = rr.nextInt(names.size());
         }
         if (category.equals("Instagram")){
-            while (whatToCompare[randomNumber].equals("0")){
-                randomNumber = rr.nextInt(names.length);
+            while (whatToCompare.get(randomNumber) == 0){
+                randomNumber = rr.nextInt(names.size());
             }
         }
-        gameItems.add(new GameItem(names[randomNumber],subNames[randomNumber],Integer.valueOf(whatToCompare[randomNumber]),0,false,null,imageUrls[randomNumber],credits[randomNumber]));
-        num_1 = Integer.valueOf(whatToCompare[randomNumber]);
+        gameItems.add(new GameItem(names.get(randomNumber),subNames.get(randomNumber),whatToCompare.get(randomNumber),0,false,null,imageUrls.get(randomNumber),credits.get(randomNumber)));
+        num_1 = whatToCompare.get(randomNumber);
         prev = randomNumber;
-        prev_str = names[randomNumber];
+        prev_str = names.get(randomNumber);
 
         gameItems.add(nextItem());
 
-        num_2 = Integer.valueOf(whatToCompare[prev]);
-        //gameItems.add(new GameItem("Man","@man",20,0,false,null,imageUrls[0],"some"));
-        gameAdapter = new GameAdapter2(this,gameItems);
+        num_2 = whatToCompare.get(prev);
+        gameAdapter = new GameAdapter(this,gameItems);
         recyclerView.setAdapter(gameAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //recyclerView.setItemAnimator(new ScaleInTopAnimator());
 
-        highScore = sharedPreferences.getInt(category,0);
+        highScore = getAppPref().getHighScores(category);
         tv_high_score.setText("Highscore: "+ highScore);
     }
+    
+    private Single<List<Player>> getGameData(){
+        PlayerDao playerDao = AppDatabase.Companion.getInstance(getApplicationContext()).playerDao();
+        return playerDao.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public AppPreference getAppPref(){
+        return new AppPreference(getApplicationContext());
+    }
 
-    public class GameAdapter2  extends RecyclerView.Adapter<GameAdapter2.ViewHolder> {
+    public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> {
 
         private ArrayList<GameItem> mGameItems;
         private Context mContext;
 
 
-        public GameAdapter2(Context context, ArrayList<GameItem> gameItems) {
+        GameAdapter(Context context, ArrayList<GameItem> gameItems) {
             mGameItems = gameItems;
             mContext = context;
         }
 
-        // Easy access to the context object in the recyclerview
         private Context getContext() {
             return mContext;
         }
 
         @Override
-        public GameAdapter2.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public GameAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
 
             int measuredHeight = parent.getMeasuredHeight();
             int measuredWidth = parent.getMeasuredWidth();
-            if (this.getContext().getResources().getConfiguration().orientation == 2) {
+            if (getContext().getResources().getConfiguration().orientation == 2) {
                 measuredWidth /= 2;
             } else {
                 measuredHeight /= 2;
             }
-            // Inflate the custom layout
             View gameView = inflater.inflate(R.layout.game_item, parent, false);
             gameView.setLayoutParams(new RecyclerView.LayoutParams(measuredWidth,measuredHeight));
-
-            // Return a new holder instance
-            GameAdapter2.ViewHolder viewHolder = new GameAdapter2.ViewHolder(gameView);
-            return viewHolder;
+            return new ViewHolder(gameView);
         }
 
         @Override
-        public void onBindViewHolder(GameAdapter2.ViewHolder holder, int position) {
-            // Get the data model based on position
+        public void onBindViewHolder(GameAdapter.ViewHolder holder, int position) {
             final GameItem gameItem = mGameItems.get(position);
 
-            // Set item views based on your views and data model
             FontTextView name = holder.name;
             FontTextView username = holder.username;
             final FontTextView number = holder.number;
@@ -209,43 +229,25 @@ public class GameActivity extends AppCompatActivity{
             FontTextView tv_attribution = holder.tv_attribution;
             tv_attribution.setText(gameItem.getAuthorName());
 
-            //Picasso.with(GameActivity.this).load(gameItem.getImage_url()).into(card_image);
             Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
-
-            //Uri imageUri = Uri.parse(gameItem.getImage_url());
-            //imageView.setImageURI(imageUri);
-
 
             if (gameItem.getImage_url().equals("None")){
                 Log.e("Doesn't have image",gameItem.getName());
             }
 
 
-            more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewSwitcher.showNext();
-                    onButtonClick(true);
-                }
+            more.setOnClickListener(v -> {
+                viewSwitcher.showNext();
+                onButtonClick(true);
             });
 
-            less.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
-                {
-                    viewSwitcher.showNext();
-                    onButtonClick(false);
-                }
+            less.setOnClickListener(v -> {
+                viewSwitcher.showNext();
+                onButtonClick(false);
             });
             name.setText(gameItem.getName());
 
-            if (category.equals("Instagram")){
-                username.setText("@"+gameItem.getUsername());
-            }
-
-            else {
-                username.setText(gameItem.getUsername());
-            }
+            username.setText(gameItem.getUsername());
 
 
             String text = Spacer(gameItem.getNumber()+"");
@@ -272,7 +274,7 @@ public class GameActivity extends AppCompatActivity{
             searches_more.setText(info+" than " + gameItem.getPrevName());
             prev_str = gameItem.getName();
 
-            highScore = sharedPreferences.getInt(category,0);
+            highScore = getAppPref().getHighScores(category);
             tv_high_score.setText("Highscore: "+ highScore);
 
             if (gameItem.isLocked()){
@@ -291,11 +293,7 @@ public class GameActivity extends AppCompatActivity{
         }
 
 
-        // Provide a direct reference to each of the views within a data item
-        // Used to cache the views within the item layout for fast access
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            // Your holder should contain a member variable
-            // for any view that will be set as you render a row
+        class ViewHolder extends RecyclerView.ViewHolder {
             private FontTextView name;
             private FontTextView username;
             private FontTextView number;
@@ -310,39 +308,32 @@ public class GameActivity extends AppCompatActivity{
             private ImageView cardImage;
             private FontTextView tv_attribution;
 
-
-
-            // We also create a constructor that accepts the entire item row
-            // and does the view lookups to find each subview
-            public ViewHolder(View itemView) {
-                // Stores the itemView in a public final member variable that can be used
-                // to access the context from any ViewHolder instance.
+            
+            ViewHolder(View itemView) {
                 super(itemView);
 
-                name = (FontTextView)itemView.findViewById(R.id.tv_keyword);
-                username = (FontTextView)itemView.findViewById(R.id.tv_username);
-                number = (FontTextView)itemView.findViewById(R.id.tv_volume);
-                ll_searches_view = (LinearLayout) itemView.findViewById(R.id.ll_searches_view);
-                ll_buttons = (LinearLayout) itemView.findViewById(R.id.ll_buttons);
-                searches_more = (FontTextView) itemView.findViewById(R.id.tv_searches_more);
-                viewSwitcher = (ViewSwitcher)itemView.findViewById(R.id.vs_game);
-                more = (GameButton)itemView.findViewById(R.id.bt_more);
-                less = (GameButton)itemView.findViewById(R.id.bt_less);
-                background = (ImageView) itemView.findViewById(R.id.iv_image);
-                tv_category = (FontTextView)itemView.findViewById(R.id.tv_category);
-                cardImage = (ImageView)itemView.findViewById(R.id.card_image);
-                tv_attribution = (FontTextView)itemView.findViewById(R.id.tv_attribution);
+                name = itemView.findViewById(R.id.tv_keyword);
+                username = itemView.findViewById(R.id.tv_username);
+                number = itemView.findViewById(R.id.tv_volume);
+                ll_searches_view = itemView.findViewById(R.id.ll_searches_view);
+                ll_buttons = itemView.findViewById(R.id.ll_buttons);
+                searches_more = itemView.findViewById(R.id.tv_searches_more);
+                viewSwitcher = itemView.findViewById(R.id.vs_game);
+                more = itemView.findViewById(R.id.bt_more);
+                less = itemView.findViewById(R.id.bt_less);
+                background = itemView.findViewById(R.id.iv_image);
+                tv_category = itemView.findViewById(R.id.tv_category);
+                cardImage = itemView.findViewById(R.id.card_image);
+                tv_attribution = itemView.findViewById(R.id.tv_attribution);
             }
         }
 
-        public void onButtonClick(final boolean more){
+        void onButtonClick(final boolean more){
             animateTextView(0,num_2,tv_number_2);
             CountDownTimer countDownTimer = new CountDownTimer(700,700) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-
                 }
-
                 @Override
                 public void onFinish() {
                     if (more && (num_2>=num_1)){
@@ -362,7 +353,6 @@ public class GameActivity extends AppCompatActivity{
                         CountDownTimer countDownTimer1 = new CountDownTimer(1000,1000) {
                             @Override
                             public void onTick(long millisUntilFinished) {
-
                             }
 
                             @Override
@@ -371,7 +361,6 @@ public class GameActivity extends AppCompatActivity{
                                 gameOver.putExtra("score",score);
                                 gameOver.putExtra("previous",prev);
                                 startActivityForResult(gameOver,1123);
-                                //GameActivity.this.finish();
                             }
                         };
 
@@ -390,7 +379,6 @@ public class GameActivity extends AppCompatActivity{
             CountDownTimer countDownTimer2 = new CountDownTimer(1000,1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-
                 }
 
                 @Override
@@ -398,11 +386,9 @@ public class GameActivity extends AppCompatActivity{
                     score+=1;
                     if (highScore<score)
                         highScore+=1;
-
                     tv_score_main.setText("Score: "+score);
                     tv_high_score.setText("Highscore: "+highScore);
-                    editor.putInt(category,highScore);
-                    editor.apply();
+                    getAppPref().setHighScores(category, highScore);
 
                     gameItems.remove(0);
                     notifyItemRemoved(0);
@@ -427,20 +413,17 @@ public class GameActivity extends AppCompatActivity{
         ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
         valueAnimator.setDuration(700);
 
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        valueAnimator.addUpdateListener(valueAnimator1 -> {
 
-                if (category.equals("Market Value")){
-                    textview.setText(Spacer(valueAnimator.getAnimatedValue().toString())+" £");
-
-                }
-                else {
-                    textview.setText(Spacer(valueAnimator.getAnimatedValue().toString()));
-
-                }
+            if (category.equals("Market Value")){
+                textview.setText(Spacer(valueAnimator1.getAnimatedValue().toString())+" €");
 
             }
+            else {
+                textview.setText(Spacer(valueAnimator1.getAnimatedValue().toString()));
+
+            }
+
         });
         valueAnimator.start();
 
@@ -464,143 +447,66 @@ public class GameActivity extends AppCompatActivity{
             strB.deleteCharAt(0);
         }
         return strB.toString();
-    }// end Spacer()
-/*
-    @Override
-    public void onBackPressed() {
-        CustomDialogClass cdd=new CustomDialogClass(GameActivity.this);
-
-        cdd.show();
     }
-*/
+
     public GameItem nextItem(){
         Random random = new Random();
-        int next = random.nextInt(names.length);
-        //Log.w("subNames",subNames[next]);
+        int next = random.nextInt(names.size());
         while (next==prev){
-            next = random.nextInt(names.length);
+            next = random.nextInt(names.size());
         }
-        while (subNames[next].equals("null")){
-            next = random.nextInt(names.length);
+        while (subNames.get(next).equals("null")){
+            next = random.nextInt(names.size());
         }
         if (category.equals("Instagram")){
-            while (whatToCompare[next].equals("0")){
-                next = random.nextInt(names.length);
+            while (whatToCompare.get(next) == 0){
+                next = random.nextInt(names.size());
             }
         }
-        GameItem gameItem = new GameItem(names[next],subNames[next],Integer.valueOf(whatToCompare[next]),1,true,prev_str,imageUrls[next],credits[next]);
+        GameItem gameItem = new GameItem(names.get(next),subNames.get(next), whatToCompare.get(next),1,true,prev_str,imageUrls.get(next),credits.get(next));
         prev = next;
         return gameItem;
-    };
-
-    public class GetImageFromWikipedia extends AsyncTask<String,Void,String> {
-
-        String name;
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                name = params[0];
-                String url_str = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles="+spaceConverter(params[0]);
-                URL url = new URL(url_str);
-                HttpURLConnection connection  = (HttpURLConnection)url.openConnection();
-                connection.connect();
-                InputStream in = new BufferedInputStream(connection.getInputStream());
-
-                JSONObject jsonObject = new JSONObject(convertStreamToString(in));
-                JSONObject query = jsonObject.getJSONObject("query");
-                JSONObject pages = query.getJSONObject("pages");
-                Iterator iterator = pages.keys();
-                if (iterator.hasNext()){
-                    String key = (String)iterator.next();
-                    JSONObject page = pages.getJSONObject(key);
-                    String source = page.getJSONObject("original").getString("source");
-                    return source;
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //imageViewCard.setImageDrawable(null);
-            Picasso.with(GameActivity.this).load(s).into(imageViewCard);
-            Log.e("image updated for",name);
-            //recyclerView.getAdapter().notifyItemChanged(0);
-            //imageViewCard.notify();
-        }
-
-        public String convertStreamToString(InputStream is) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-
-            String line;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append('\n');
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return sb.toString();
-        }
-
-        public String spaceConverter(String string){
-            String[] some = new String[StringUtils.countMatches(" ",string)+1];
-            some = string.split(" ");
-            String result = StringUtils.join(some,"%20");
-            return result;
-        }
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    protected void continuePlaying() {
+        score+=1;
+        if (highScore<score)
+            highScore+=1;
 
-        if (sharedPreferences.getBoolean("watched",false)){
-            editor.putBoolean("watched",false);
-            editor.apply();
-            score+=1;
-            if (highScore<score)
-                highScore+=1;
+        tv_score_main.setText("Score: "+score);
+        tv_high_score.setText("Highscore: "+highScore);
+        getAppPref().setHighScores(category, highScore);
 
-            tv_score_main.setText("Score: "+score);
-            tv_high_score.setText("Highscore: "+highScore);
-            editor.putInt(category,highScore);
-            editor.apply();
-
-            gameItems.remove(0);
-            gameAdapter.notifyItemRemoved(0);
-            gameItems.get(0).setLocked();
-            num_1 = gameItems.get(0).getNumber();
-            gameItems.add(nextItem());
-            gameAdapter.notifyItemInserted(1);
-            vsView.bring_vs();
-        }
+        gameItems.remove(0);
+        gameAdapter.notifyItemRemoved(0);
+        gameItems.get(0).setLocked();
+        num_1 = gameItems.get(0).getNumber();
+        gameItems.add(nextItem());
+        gameAdapter.notifyItemInserted(1);
+        vsView.bring_vs();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1123){
             if (resultCode == 58){
-                this.finish();
+                Bundle bundle = data.getExtras();
+                switch (bundle.getString("source")){
+                    case "playAgain":
+                        startGame();
+                        break;
+                    case "interAddClosed":
+                        startGame();
+                        break;
+                    case "videoAddWatched":
+                        continuePlaying();
+                        break;
+                    case "onBackPressed":
+                        finish();
+                        break;
+                }
             }
         }
     }

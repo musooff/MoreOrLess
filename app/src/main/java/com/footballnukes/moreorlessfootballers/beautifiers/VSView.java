@@ -33,13 +33,7 @@ public class VSView extends RelativeLayout {
         viewInflator();
     }
 
-    @TargetApi(21)
-    public VSView(Context context, AttributeSet attributeSet, int i, int i2) {
-        super(context, attributeSet, i, i2);
-        viewInflator();
-    }
-
-    private void viewInflator() {
+    public void viewInflator() {
         inflate(getContext(), R.layout.vs, this);
         this.fl_vs = (FrameLayout) findViewById(R.id.fv1);
         this.fl_answer = (FrameLayout) findViewById(R.id.fv2);

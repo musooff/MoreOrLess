@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            
             android:layout_marginRight="8dp"
             android:text="Subscribe to us" />
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            
             android:layout_marginRight="8dp"
             android:text=" /theballboy"
             android:drawableLeft="@drawable/youtube_icon"/>
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            
             android:layout_marginRight="8dp"
             android:text="Like us" />
 
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            
             android:layout_marginRight="8dp"
             android:text=" /ballboytv"
             android:drawableLeft="@drawable/facebook_icon"/>
