@@ -171,10 +171,11 @@ public class HomeActivity extends AppCompatActivity {
             return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
         }
 
-        public void setHighScores(){
+        void setHighScores(){
             for (Category category: mCategory){
                 if (category.isPurchased()) category.setScore(getAppPref().getHighScores(category.getName()));
             }
+            notifyDataSetChanged();
         }
         @Override
         public int getItemCount() {

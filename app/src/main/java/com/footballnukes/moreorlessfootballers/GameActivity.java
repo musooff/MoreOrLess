@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
+import com.footballnukes.moreorlessfootballers.game.GameItem;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;

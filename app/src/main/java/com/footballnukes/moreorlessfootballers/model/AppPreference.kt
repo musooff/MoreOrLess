@@ -2,15 +2,17 @@ package com.footballnukes.moreorlessfootballers.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 
-class AppPreference(context: Context) {
+class AppPreference(private var context: Context) {
 
     companion object {
         const val LAST_GAME = "last"
     }
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences("Download Data", 0)
-    private lateinit var editor: SharedPreferences.Editor
+    private var editor: SharedPreferences.Editor
 
     init {
         editor = sharedPreferences.edit().apply {  }
@@ -26,5 +28,11 @@ class AppPreference(context: Context) {
 
     fun setLastGame(name: String) {
         editor.putString(LAST_GAME, name).apply()
+    }
+
+    fun isConnected(): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnected == true
     }
 }

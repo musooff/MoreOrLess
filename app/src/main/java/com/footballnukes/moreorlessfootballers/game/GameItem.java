@@ -1,4 +1,4 @@
-package com.footballnukes.moreorlessfootballers;
+package com.footballnukes.moreorlessfootballers.game;
 
 /**
  * Created by moshe on 19/04/2017.
