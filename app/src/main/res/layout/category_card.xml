@@ -41,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_category_name"
                     android:textSize="25sp"
-                    
                     android:text="Instagram"/>
                 <ViewSwitcher
                     android:id="@+id/vs_score"

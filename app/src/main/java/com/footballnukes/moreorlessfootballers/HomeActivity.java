@@ -133,22 +133,22 @@ public class HomeActivity extends AppCompatActivity {
             ImageView iv_border = holder.iv_border;
 
             name.setText(category.getName());
+            if (category.getName().contains("Goals")){
+                name.setText("Goals");
+            }
             description.setText(category.getDescription());
             score.setText(category.getScore()+"");
 
 
-            playButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!category.isPurchased()){
-                        Toast.makeText(HomeActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
+            playButton.setOnClickListener(v -> {
+                if (!category.isPurchased()){
+                    Toast.makeText(HomeActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
 
-                    }
-                    else {
-                        Intent game = new Intent(HomeActivity.this, GameActivity.class);
-                        getAppPref().setLastGame(category.getName());
-                        startActivity(game);
-                    }
+                }
+                else {
+                    Intent game = new Intent(HomeActivity.this, GameActivity.class);
+                    getAppPref().setLastGame(category.getName());
+                    startActivity(game);
                 }
             });
 

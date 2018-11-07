@@ -225,16 +225,12 @@ public class GameActivity extends AppCompatActivity{
             GameButton less = holder.less;
             ImageView imageView = holder.background;
             FontTextView tv_attribution = holder.tv_attribution;
-
-            if (gameItem.getImage_url() != null){
-                tv_attribution.setText(gameItem.getAuthorName());
-                Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
-            }
-            else{
+            tv_attribution.setText(gameItem.getAuthorName());
+            Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
+            if (gameItem.getImage_url() == null){
                 tv_attribution.setText(getString(R.string.no_image));
+
             }
-
-
             more.setOnClickListener(v -> {
                 viewSwitcher.showNext();
                 onButtonClick(true);
@@ -443,10 +439,7 @@ public class GameActivity extends AppCompatActivity{
     public GameItem nextItem(){
         Random random = new Random();
         int next = random.nextInt(names.size());
-        while (next == prev){
-            next = random.nextInt(names.size());
-        }
-        while (subNames.get(next) == null){
+        while ((next == prev) || (whatToCompare.get(next).equals(whatToCompare.get(prev))) || (subNames.get(next) == null)){
             next = random.nextInt(names.size());
         }
         GameItem gameItem = new GameItem(names.get(next),subNames.get(next), whatToCompare.get(next),1,true,prev_str,imageUrls.get(next),credits.get(next));

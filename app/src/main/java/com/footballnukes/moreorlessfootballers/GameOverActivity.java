@@ -1,5 +1,6 @@
 package com.footballnukes.moreorlessfootballers;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -65,7 +66,6 @@ public class GameOverActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         go_int_score = extras.getInt("score");
         go_score.setText(go_int_score+"");
-
 
         go_playAgain.setOnClickListener(v -> {
             if (mInterstitialAd.isLoaded()) {
