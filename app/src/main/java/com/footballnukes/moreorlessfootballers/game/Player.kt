@@ -21,7 +21,7 @@ class Player() {
     var licenseShorName: String? = null
     var licenceUrl: String? = null
     var facebookId: String? =null
-    var facebbookFollowers: Long = 0
+    var facebookFollowers: Long = 0
     var jerseyNumber: Int = 0
     var value: Long = 0
     var goals: Int = 0
@@ -35,4 +35,7 @@ class Player() {
     var netWorth: Long = 0
     var age: Int = 0
     var position: String? = null
+    var height: Double = 0.0
+    var wikiName: String? = null
+
 }

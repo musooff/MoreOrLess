@@ -1,4 +1,4 @@
-package com.footballnukes.moreorlessfootballers;
+package com.footballnukes.moreorlessfootballers.game;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+
 import androidx.annotation.Nullable;
-import android.view.View;
+
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.footballnukes.moreorlessfootballers.model.AppPreference;
+import com.footballnukes.moreorlessfootballers.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -21,13 +21,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.unity3d.ads.IUnityAdsListener;
-import com.unity3d.ads.UnityAds;
 
 
 import com.footballnukes.moreorlessfootballers.beautifiers.FontTextView;
 import com.footballnukes.moreorlessfootballers.beautifiers.GameButton;
-import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Created by moshe on 20/04/2017.
@@ -119,10 +116,8 @@ public class GameOverActivity extends Activity {
             public void onRewardedVideoStarted() {
 
             }
-
             @Override
             public void onRewardedVideoAdClosed() {
-
             }
 
             @Override
@@ -156,7 +151,7 @@ public class GameOverActivity extends Activity {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                beginPlayingGame("interAddClosed");
+                beginPlayingGame("interAdClosed");
             }
         });
 
@@ -214,4 +209,6 @@ public class GameOverActivity extends Activity {
     public void onBackPressed() {
         beginPlayingGame("onBackPressed");
     }
+
+
 }

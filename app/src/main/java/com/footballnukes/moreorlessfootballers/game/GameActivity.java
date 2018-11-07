@@ -1,20 +1,16 @@
-package com.footballnukes.moreorlessfootballers;
+package com.footballnukes.moreorlessfootballers.game;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import android.util.Log;
@@ -26,27 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
-import com.footballnukes.moreorlessfootballers.game.GameItem;
-import com.footballnukes.moreorlessfootballers.game.Player;
+import com.footballnukes.moreorlessfootballers.R;
 import com.footballnukes.moreorlessfootballers.model.AppPreference;
 import com.footballnukes.moreorlessfootballers.room.AppDatabase;
 import com.footballnukes.moreorlessfootballers.room.dao.PlayerDao;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.util.Random;
@@ -231,7 +213,7 @@ public class GameActivity extends AppCompatActivity{
 
             Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
 
-            if (gameItem.getImage_url().equals("None")){
+            if (gameItem.getImage_url() == null){
                 Log.e("Doesn't have image",gameItem.getName());
             }
 
@@ -497,10 +479,10 @@ public class GameActivity extends AppCompatActivity{
                     case "playAgain":
                         startGame();
                         break;
-                    case "interAddClosed":
+                    case "interAdClosed":
                         startGame();
                         break;
-                    case "videoAddWatched":
+                    case "videoAdWatched":
                         continuePlaying();
                         break;
                     case "onBackPressed":

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_higher_lower"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/get_players"
+            android:text="Get Players"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/check_if_wrong"
+            android:visibility="gone"
+            android:text="Check if Wrong"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/insta_updater"
+            android:text="Update Instagram"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/transfer_updater"
+            android:visibility="gone"
+            android:text="Update TransferMarkt"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/wiki_images"
+            android:text="Wikipedia images"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/error_log"
+            android:text="Error Log"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:id="@+id/skip"
+            android:text="Skip"/>
+
+    </LinearLayout>
+
+
+
+    <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/now_updating"
+        android:layout_above="@id/player"
+        android:gravity="center_horizontal"/>
+    <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/player"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

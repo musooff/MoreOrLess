@@ -18,20 +18,23 @@
 
 
         </activity>
+        <activity android:name=".updater.UpdaterActivity">
+        </activity>
         <activity
-            android:name="com.footballnukes.moreorlessfootballers.GameActivity"
+            android:name=".game.GameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.footballnukes.moreorlessfootballers.GameOverActivity"
+            android:name=".game.GameOverActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.footballnukes.moreorlessfootballers.SplashActivity"
+        <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".Test" />
         <meta-data

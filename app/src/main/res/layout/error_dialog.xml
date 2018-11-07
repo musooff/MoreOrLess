@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="10dp">
+        <com.footballnukes.moreorlessfootballers.beautifiers.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errors"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="20dp"/>
+        <com.footballnukes.moreorlessfootballers.beautifiers.PlayButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/okay"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Okay"/>
+
+    </LinearLayout>
+</ScrollView>

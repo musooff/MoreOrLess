@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.footballnukes.moreorlessfootballers.game.Player
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -15,6 +16,9 @@ import io.reactivex.Single
 interface PlayerDao {
     @Query("SELECT * FROM Player")
     fun getAll(): Single<List<Player>>
+
+    @Query("SELECT * FROM Player WHERE id > :from")
+    fun getAllFrom(from: Int): Single<List<Player>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(players: List<Player>)

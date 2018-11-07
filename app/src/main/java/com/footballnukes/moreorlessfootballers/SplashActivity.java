@@ -34,7 +34,7 @@ import java.util.List;
 public class SplashActivity extends Activity {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference playersRef = mRootRef.child("players");
+    DatabaseReference playersRef = mRootRef.child("name_players");
 
     private PlayerDao playerDao;
 
