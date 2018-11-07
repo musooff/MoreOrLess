@@ -301,7 +301,7 @@ class UpdaterActivity: Activity() {
     }
 
     override fun onBackPressed() {
-        if (dialog.isShowing){
+        if (::dialog.isInitialized && dialog.isShowing){
             dialog.dismiss()
         }
         disposable.clear()
