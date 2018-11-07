@@ -146,9 +146,9 @@ public class GameActivity extends AppCompatActivity{
         defaults();
         gameItems= new ArrayList<>();
         Random rr = new Random();
-        int randomNumber = rr.nextInt(names.size());
+        int randomNumber = 0;
         while (subNames.get(randomNumber) == null){
-            randomNumber = rr.nextInt(names.size());
+            randomNumber++;
         }
 
         gameItems.add(new GameItem(names.get(randomNumber),subNames.get(randomNumber),whatToCompare.get(randomNumber),0,false,null,imageUrls.get(randomNumber),credits.get(randomNumber)));
@@ -225,12 +225,9 @@ public class GameActivity extends AppCompatActivity{
             GameButton less = holder.less;
             ImageView imageView = holder.background;
             FontTextView tv_attribution = holder.tv_attribution;
-
-            if (gameItem.getImage_url() != null){
-                tv_attribution.setText(gameItem.getAuthorName());
-                Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
-            }
-            else{
+            tv_attribution.setText(gameItem.getAuthorName());
+            Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
+            if (gameItem.getImage_url() == null){
                 tv_attribution.setText(getString(R.string.no_image));
             }
 
@@ -329,38 +326,9 @@ public class GameActivity extends AppCompatActivity{
                 }
                 @Override
                 public void onFinish() {
-                    if (more && (num_2>=num_1)){
                         vsView.correct();
                         vsView.bring_answer();
                         next();
-                    }
-                    else if (!more && (num_2<=num_1)){
-                        vsView.correct();
-                        vsView.bring_answer();
-                        next();
-                    }
-                    else {
-                        vsView.wrong();
-                        vsView.bring_answer();
-                        vsView.bring_answer();
-                        CountDownTimer countDownTimer1 = new CountDownTimer(1000,1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                Intent gameOver = new Intent(getApplicationContext(),GameOverActivity.class);
-                                gameOver.putExtra("score",score);
-                                gameOver.putExtra("previous",prev);
-                                startActivityForResult(gameOver,1123);
-                            }
-                        };
-
-                        countDownTimer1.start();
-
-                    }
-
                 }
             };
             countDownTimer.start();
@@ -442,12 +410,9 @@ public class GameActivity extends AppCompatActivity{
 
     public GameItem nextItem(){
         Random random = new Random();
-        int next = random.nextInt(names.size());
-        while (next == prev){
-            next = random.nextInt(names.size());
-        }
+        int next = prev+1;
         while (subNames.get(next) == null){
-            next = random.nextInt(names.size());
+            next++;
         }
         GameItem gameItem = new GameItem(names.get(next),subNames.get(next), whatToCompare.get(next),1,true,prev_str,imageUrls.get(next),credits.get(next));
         prev = next;
