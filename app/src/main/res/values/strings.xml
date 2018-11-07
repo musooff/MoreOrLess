@@ -8,5 +8,7 @@
     <string name="video_ad_id">ca-app-pub-8967799784519571/8590391645</string>
     <string name="go_banner_ad_id">ca-app-pub-8967799784519571/9523132046</string>
     <string name="public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk5yHsqm3uju4eBDSWkNWbPDaqPtPZaIGCVwc1iCoMYZavc/Pplg7Ju7r7FHelhu1GGuTS2jQ9juJ8c9mnZ+8xlVMCO8N/+uFRUTZ8XwWLGQQbI10pvtYZtvZNFwkCxTZuth9dv5VPL+xe4x6ZZ0MJK12pzslFHxF7hbEPdH6XMXQgaBjmXELL0dCYE5v2XLxYximIJK22BjECreVLgtk9mGuoSJAlFlUN6/X+G4WD0VGvbXtzeop5kt4v153zF5bBzM64QhVCz06sil1dAJMpcCb0+9YNXudurcPGlCLhbQ3MafsbXweTvHAOJglENEoQMlr8MDI/4bO4eVXGsdg/wIDAQAB</string>
+    <string name="no_image">No image</string>
+    <string name="highscore">Highscore:</string>
 
 </resources>

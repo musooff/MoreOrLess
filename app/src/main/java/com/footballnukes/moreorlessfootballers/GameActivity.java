@@ -98,10 +98,10 @@ public class GameActivity extends AppCompatActivity{
                             for (Player player: players){
                                 names.add(player.getName());
                                 imageUrls.add(player.getWikipediaImageUrl());
-                                credits.add(player.getAuthorName());
+                                credits.add(player.getArtist());
                                 switch (category){
                                     case "Market Value":
-                                        whatToCompare.add((int) player.getValue());
+                                        whatToCompare.add(player.getValue());
                                         subNames.add(player.getClub());
                                         break;
                                     case "Age":
@@ -113,8 +113,13 @@ public class GameActivity extends AppCompatActivity{
                                         subNames.add(player.getClub());
                                         break;
                                     case "Instagram":
-                                        whatToCompare.add((int) player.getInstagramFollowers());
-                                        subNames.add("@"+player.getInstagramId());
+                                        whatToCompare.add(player.getInstagramFollowers());
+                                        if (player.getInstagramId() == null){
+                                            subNames.add(null);
+                                        }
+                                        else {
+                                            subNames.add("@"+player.getInstagramId());
+                                        }
                                         break;
 
                                 }
@@ -142,14 +147,10 @@ public class GameActivity extends AppCompatActivity{
         gameItems= new ArrayList<>();
         Random rr = new Random();
         int randomNumber = rr.nextInt(names.size());
-        while (subNames.get(randomNumber).equals("null")){
+        while (subNames.get(randomNumber) == null){
             randomNumber = rr.nextInt(names.size());
         }
-        if (category.equals("Instagram")){
-            while (whatToCompare.get(randomNumber) == 0){
-                randomNumber = rr.nextInt(names.size());
-            }
-        }
+
         gameItems.add(new GameItem(names.get(randomNumber),subNames.get(randomNumber),whatToCompare.get(randomNumber),0,false,null,imageUrls.get(randomNumber),credits.get(randomNumber)));
         num_1 = whatToCompare.get(randomNumber);
         prev = randomNumber;
@@ -218,21 +219,19 @@ public class GameActivity extends AppCompatActivity{
             final FontTextView number = holder.number;
             FontTextView tv_category = holder.tv_category;
             tv_number_2 = holder.number;
-            LinearLayout ll_searches_view = holder.ll_searches_view;
-            LinearLayout ll_buttons = holder.ll_buttons;
             FontTextView searches_more = holder.searches_more;
             final ViewSwitcher viewSwitcher = holder.viewSwitcher;
             GameButton more = holder.more;
             GameButton less = holder.less;
             ImageView imageView = holder.background;
-            ImageView card_image = holder.cardImage;
             FontTextView tv_attribution = holder.tv_attribution;
-            tv_attribution.setText(gameItem.getAuthorName());
 
-            Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
-
-            if (gameItem.getImage_url().equals("None")){
-                Log.e("Doesn't have image",gameItem.getName());
+            if (gameItem.getImage_url() != null){
+                tv_attribution.setText(gameItem.getAuthorName());
+                Picasso.with(GameActivity.this).load(gameItem.getImage_url()).fit().into(imageView);
+            }
+            else{
+                tv_attribution.setText(getString(R.string.no_image));
             }
 
 
@@ -245,8 +244,8 @@ public class GameActivity extends AppCompatActivity{
                 viewSwitcher.showNext();
                 onButtonClick(false);
             });
-            name.setText(gameItem.getName());
 
+            name.setText(gameItem.getName());
             username.setText(gameItem.getUsername());
 
 
@@ -275,7 +274,7 @@ public class GameActivity extends AppCompatActivity{
             prev_str = gameItem.getName();
 
             highScore = getAppPref().getHighScores(category);
-            tv_high_score.setText("Highscore: "+ highScore);
+            tv_high_score.setText(getString(R.string.highscore)+ highScore);
 
             if (gameItem.isLocked()){
                 viewSwitcher.showNext();
@@ -298,14 +297,11 @@ public class GameActivity extends AppCompatActivity{
             private FontTextView username;
             private FontTextView number;
             private FontTextView tv_category;
-            private LinearLayout ll_searches_view;
-            private LinearLayout ll_buttons;
             private FontTextView searches_more;
             private ViewSwitcher viewSwitcher;
             private GameButton more;
             private GameButton less;
             private ImageView background;
-            private ImageView cardImage;
             private FontTextView tv_attribution;
 
             
@@ -315,15 +311,12 @@ public class GameActivity extends AppCompatActivity{
                 name = itemView.findViewById(R.id.tv_keyword);
                 username = itemView.findViewById(R.id.tv_username);
                 number = itemView.findViewById(R.id.tv_volume);
-                ll_searches_view = itemView.findViewById(R.id.ll_searches_view);
-                ll_buttons = itemView.findViewById(R.id.ll_buttons);
                 searches_more = itemView.findViewById(R.id.tv_searches_more);
                 viewSwitcher = itemView.findViewById(R.id.vs_game);
                 more = itemView.findViewById(R.id.bt_more);
                 less = itemView.findViewById(R.id.bt_less);
                 background = itemView.findViewById(R.id.iv_image);
                 tv_category = itemView.findViewById(R.id.tv_category);
-                cardImage = itemView.findViewById(R.id.card_image);
                 tv_attribution = itemView.findViewById(R.id.tv_attribution);
             }
         }
@@ -427,8 +420,6 @@ public class GameActivity extends AppCompatActivity{
         });
         valueAnimator.start();
 
-
-
     }
 
     private String Spacer(String number){
@@ -452,16 +443,11 @@ public class GameActivity extends AppCompatActivity{
     public GameItem nextItem(){
         Random random = new Random();
         int next = random.nextInt(names.size());
-        while (next==prev){
+        while (next == prev){
             next = random.nextInt(names.size());
         }
-        while (subNames.get(next).equals("null")){
+        while (subNames.get(next) == null){
             next = random.nextInt(names.size());
-        }
-        if (category.equals("Instagram")){
-            while (whatToCompare.get(next) == 0){
-                next = random.nextInt(names.size());
-            }
         }
         GameItem gameItem = new GameItem(names.get(next),subNames.get(next), whatToCompare.get(next),1,true,prev_str,imageUrls.get(next),credits.get(next));
         prev = next;
@@ -497,10 +483,10 @@ public class GameActivity extends AppCompatActivity{
                     case "playAgain":
                         startGame();
                         break;
-                    case "interAddClosed":
+                    case "interAdClosed":
                         startGame();
                         break;
-                    case "videoAddWatched":
+                    case "videoAdWatched":
                         continuePlaying();
                         break;
                     case "onBackPressed":

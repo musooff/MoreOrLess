@@ -2,7 +2,6 @@ package com.footballnukes.moreorlessfootballers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,13 +20,11 @@ import android.widget.ViewSwitcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.footballnukes.moreorlessfootballers.beautifiers.FontTextView;
-import com.footballnukes.moreorlessfootballers.beautifiers.GameButton;
 import com.footballnukes.moreorlessfootballers.beautifiers.PlayButton;
 import com.footballnukes.moreorlessfootballers.model.AppPreference;
 

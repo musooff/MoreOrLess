@@ -156,7 +156,7 @@ public class GameOverActivity extends Activity {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                beginPlayingGame("interAddClosed");
+                beginPlayingGame("interAdClosed");
             }
         });
 
