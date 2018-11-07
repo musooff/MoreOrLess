@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,13 +76,13 @@ public class SplashActivity extends Activity {
 
     private void showErrorMessage(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("No Internet Connection!")
+        builder.setTitle(Html.fromHtml(getString(R.string.no_connection)))
                 .setMessage("For the first run internet access is required.")
-                .setPositiveButton("Try again", (dialog, which) -> {
+                .setPositiveButton(Html.fromHtml(getString(R.string.try_again)), (dialog, which) -> {
                     if (getAppPref().isConnected()) updateValues();
                     else showErrorMessage();
                 })
-                .setNegativeButton("Exit", ((dialog, which) -> finish()))
+                .setNegativeButton(Html.fromHtml(getString(R.string.exit)), ((dialog, which) -> finish()))
                 .setCancelable(false)
                 .create()
                 .show();

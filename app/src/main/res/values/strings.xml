@@ -11,4 +11,9 @@
     <string name="no_image">No image</string>
     <string name="highscore">Highscore:</string>
 
+    <string name="no_connection"><![CDATA[<b><font color=#010101>No internet connection</font></b>]]></string>
+    <string name="try_again"><![CDATA[<b><font color=#010101>Try again</font></b>]]></string>
+    <string name="exit"><![CDATA[<b><font color=#010101>Exit</font></b>]]></string>
+
+
 </resources>
