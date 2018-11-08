@@ -223,9 +223,10 @@ class UpdaterActivity: Activity() {
     }
 
     private fun updateInsta(){
-        disposable.add(Flowable.just(players.subList(fromId, 500))
+        disposable.add(Flowable.just(players.subList(fromId, 499))
                 .subscribeOn(Schedulers.io())
                 .flatMap { playerList: MutableList<Player> -> Flowable.fromIterable(playerList)}
+                .filter { player -> player.instagramId != null }
                 .flatMap( { player: Player -> UpdaterService().getInstaInfo(player.instagramId!!)},
                         {player: Player, instaResult: InstaResult -> Pair(player, instaResult)})
                 .doOnComplete{
@@ -236,9 +237,9 @@ class UpdaterActivity: Activity() {
                 .subscribe(
                         { pair ->
                             if (pair.second.success){
-                                playersRef.child(pair.first.id.toString()).child("instagramFollowers")
+                                newPlayersRef.child(pair.first.name!!).child("instagramFollowers")
                                         .setValue(longOf(pair.second.data!!.followers!!))
-                                fromId = pair.first.id
+                                fromId ++
                                 fromName = pair.first.name!!
                                 updateInstaLog()
 
@@ -255,7 +256,7 @@ class UpdaterActivity: Activity() {
     }
 
     private fun getPlayers(){
-        playersRef.addListenerForSingleValueEvent(object : ValueEventListener{
+        newPlayersRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
             }
 

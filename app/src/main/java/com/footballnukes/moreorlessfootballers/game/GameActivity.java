@@ -96,7 +96,10 @@ public class GameActivity extends AppCompatActivity{
                                         break;
                                     case "Instagram":
                                         whatToCompare.add((int) player.getInstagramFollowers());
-                                        subNames.add("@"+player.getInstagramId());
+                                        if (player.getInstagramId() == null){
+                                            subNames.add(null);
+                                        }
+                                        else subNames.add("@"+player.getInstagramId());
                                         break;
 
                                 }
@@ -123,15 +126,7 @@ public class GameActivity extends AppCompatActivity{
         defaults();
         gameItems= new ArrayList<>();
         Random rr = new Random();
-        int randomNumber = rr.nextInt(names.size());
-        while (subNames.get(randomNumber).equals("null")){
-            randomNumber = rr.nextInt(names.size());
-        }
-        if (category.equals("Instagram")){
-            while (whatToCompare.get(randomNumber) == 0){
-                randomNumber = rr.nextInt(names.size());
-            }
-        }
+        int randomNumber = 0;
         gameItems.add(new GameItem(names.get(randomNumber),subNames.get(randomNumber),whatToCompare.get(randomNumber),0,false,null,imageUrls.get(randomNumber),credits.get(randomNumber)));
         num_1 = whatToCompare.get(randomNumber);
         prev = randomNumber;
@@ -318,38 +313,9 @@ public class GameActivity extends AppCompatActivity{
                 }
                 @Override
                 public void onFinish() {
-                    if (more && (num_2>=num_1)){
                         vsView.correct();
                         vsView.bring_answer();
                         next();
-                    }
-                    else if (!more && (num_2<=num_1)){
-                        vsView.correct();
-                        vsView.bring_answer();
-                        next();
-                    }
-                    else {
-                        vsView.wrong();
-                        vsView.bring_answer();
-                        vsView.bring_answer();
-                        CountDownTimer countDownTimer1 = new CountDownTimer(1000,1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                Intent gameOver = new Intent(getApplicationContext(),GameOverActivity.class);
-                                gameOver.putExtra("score",score);
-                                gameOver.putExtra("previous",prev);
-                                startActivityForResult(gameOver,1123);
-                            }
-                        };
-
-                        countDownTimer1.start();
-
-                    }
-
                 }
             };
             countDownTimer.start();
@@ -433,17 +399,9 @@ public class GameActivity extends AppCompatActivity{
 
     public GameItem nextItem(){
         Random random = new Random();
-        int next = random.nextInt(names.size());
-        while (next==prev){
-            next = random.nextInt(names.size());
-        }
-        while (subNames.get(next).equals("null")){
-            next = random.nextInt(names.size());
-        }
-        if (category.equals("Instagram")){
-            while (whatToCompare.get(next) == 0){
-                next = random.nextInt(names.size());
-            }
+        int next = prev + 1;
+        while (subNames.get(next) == null){
+            next ++;
         }
         GameItem gameItem = new GameItem(names.get(next),subNames.get(next), whatToCompare.get(next),1,true,prev_str,imageUrls.get(next),credits.get(next));
         prev = next;

@@ -42,7 +42,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="50dp"
             android:id="@+id/transfer_updater"
-            android:visibility="gone"
             android:text="Update TransferMarkt"/>
         <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
             android:layout_width="match_parent"
@@ -51,6 +50,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="50dp"
             android:id="@+id/wiki_images"
+            android:visibility="gone"
             android:text="Wikipedia images"/>
         <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
             android:layout_width="match_parent"
