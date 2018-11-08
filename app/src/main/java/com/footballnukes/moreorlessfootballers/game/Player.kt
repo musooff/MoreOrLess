@@ -15,7 +15,7 @@ class Player() {
     var instagramId: String? = null
     var instagramFollowers: Long = 0
     var wikipediaImageUrl:String? = null
-    var authorName: String? = null
+    var artist: String? = null
     var wikiImageCredits: String? = null
     var wikiImageTitle: String? = null
     var licenseShorName: String? = null

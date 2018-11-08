@@ -80,7 +80,7 @@ public class GameActivity extends AppCompatActivity{
                             for (Player player: players){
                                 names.add(player.getName());
                                 imageUrls.add(player.getWikipediaImageUrl());
-                                credits.add(player.getAuthorName());
+                                credits.add(player.getArtist());
                                 switch (category){
                                     case "Market Value":
                                         whatToCompare.add((int) player.getValue());
