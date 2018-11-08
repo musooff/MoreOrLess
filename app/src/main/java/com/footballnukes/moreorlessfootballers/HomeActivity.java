@@ -157,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                 lock_frame.setVisibility(View.VISIBLE);
                 iv_border.setImageResource(R.drawable.white_border);
                 playButton.setText("Get");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_getplus_drawable,0,0,0);
+                playButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_getplus,0,0,0);
             }
             iv_background.setImageResource(getImageId(getApplicationContext(),category.getImageUrl()));
 

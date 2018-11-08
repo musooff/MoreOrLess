@@ -147,8 +147,8 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Keep Going?"
-                    android:drawableLeft="@drawable/ic_play_keep_going"
-                    android:paddingLeft="15dp"
+                    android:drawableLeft="@drawable/ic_keepgoing"
+                    android:paddingLeft="30dp"
                     android:layout_centerInParent="true"  />
             </RelativeLayout>
             <com.footballnukes.moreorlessfootballers.beautifiers.GameButton
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Restart Again"
-                android:drawableRight="@drawable/ic_restart_drawable" />
+                android:drawableRight="@drawable/icon_restart" />
             <include layout="@layout/social_links"></include>
         </LinearLayout>
 

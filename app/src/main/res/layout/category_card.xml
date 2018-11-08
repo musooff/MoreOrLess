@@ -116,7 +116,7 @@
                     android:id="@+id/bt_play"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_play_drawable"
+                    android:drawableLeft="@drawable/ic_play"
                     android:paddingLeft="15dp"
                     android:drawablePadding="-15dp"
                     android:text="Play"

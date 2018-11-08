@@ -83,11 +83,11 @@ public class GameOverActivity extends Activity {
             }
         });
 
-        go_tweet.setOnClickListener(v -> share(getApplicationContext(),go_int_score,"com.twitter.android"));
+        go_tweet.setOnClickListener(v -> share(go_int_score,"com.twitter.android"));
 
-        go_share.setOnClickListener(v -> share(getApplicationContext(),go_int_score,"com.facebook.katana"));
+        go_share.setOnClickListener(v -> share(go_int_score,"com.facebook.katana"));
 
-        go_other.setOnClickListener(v -> share(getApplicationContext(),go_int_score,null));
+        go_other.setOnClickListener(v -> share(go_int_score,null));
 
         ll_facebook = findViewById(R.id.ll_facebook);
         ll_facebook.setOnClickListener(v -> {
@@ -188,7 +188,7 @@ public class GameOverActivity extends Activity {
         }
     }
 
-    public static void share(Context context,int level, String pack)
+    public void share(int level, String pack)
     {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -196,7 +196,7 @@ public class GameOverActivity extends Activity {
         sendIntent.putExtra(Intent.EXTRA_TEXT, text + GameURL);
         sendIntent.setType("text/plain");
         try {
-            int versionCode =  context.getPackageManager().getPackageInfo(pack, 0).versionCode;
+            int versionCode =  getPackageManager().getPackageInfo(pack, 0).versionCode;
             if (versionCode !=0){
                 if (pack != null){
                     sendIntent.setPackage(pack);
@@ -206,7 +206,7 @@ public class GameOverActivity extends Activity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        context.startActivity(sendIntent);
+        startActivity(sendIntent);
     }
 
 
