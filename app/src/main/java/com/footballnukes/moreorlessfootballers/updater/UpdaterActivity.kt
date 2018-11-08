@@ -391,7 +391,7 @@ class UpdaterActivity: Activity() {
                                 player.goals = tableAge[i*13+5].text().toInt()
                                 //player.position = tablePos[i].select("tr")[1].text()
                                 //player.club = tableClub.select("img")[i].attr("alt")
-                                player.value = valueToLong(tableValue.select("b")[i].text())
+                                player.value = valueToInt(tableValue.select("b")[i].text())
                                 players.add(player)
                             }
                             if (transferPageCount == 20){
@@ -410,10 +410,10 @@ class UpdaterActivity: Activity() {
         )
     }
 
-    private fun valueToLong(string: String): Long {
+    private fun valueToInt(string: String): Int {
         var string = StringUtils.substringBefore(string, ",")
         string += "000000"
-        return string.toLong()
+        return string.toInt()
     }
 
     private fun checkIfWrong(){

@@ -83,7 +83,7 @@ public class GameActivity extends AppCompatActivity{
                                 credits.add(player.getArtist());
                                 switch (category){
                                     case "Market Value":
-                                        whatToCompare.add((int) player.getValue());
+                                        whatToCompare.add(player.getValue());
                                         subNames.add(player.getClub());
                                         break;
                                     case "Age":
@@ -95,7 +95,7 @@ public class GameActivity extends AppCompatActivity{
                                         subNames.add(player.getClub());
                                         break;
                                     case "Instagram":
-                                        whatToCompare.add((int) player.getInstagramFollowers());
+                                        whatToCompare.add(player.getInstagramFollowers());
                                         if (player.getInstagramId() == null){
                                             subNames.add(null);
                                         }
@@ -195,14 +195,11 @@ public class GameActivity extends AppCompatActivity{
             final FontTextView number = holder.number;
             FontTextView tv_category = holder.tv_category;
             tv_number_2 = holder.number;
-            LinearLayout ll_searches_view = holder.ll_searches_view;
-            LinearLayout ll_buttons = holder.ll_buttons;
             FontTextView searches_more = holder.searches_more;
             final ViewSwitcher viewSwitcher = holder.viewSwitcher;
             GameButton more = holder.more;
             GameButton less = holder.less;
             ImageView imageView = holder.background;
-            ImageView card_image = holder.cardImage;
             FontTextView tv_attribution = holder.tv_attribution;
             tv_attribution.setText(gameItem.getAuthorName());
 
@@ -275,14 +272,11 @@ public class GameActivity extends AppCompatActivity{
             private FontTextView username;
             private FontTextView number;
             private FontTextView tv_category;
-            private LinearLayout ll_searches_view;
-            private LinearLayout ll_buttons;
             private FontTextView searches_more;
             private ViewSwitcher viewSwitcher;
             private GameButton more;
             private GameButton less;
             private ImageView background;
-            private ImageView cardImage;
             private FontTextView tv_attribution;
 
             
@@ -292,15 +286,12 @@ public class GameActivity extends AppCompatActivity{
                 name = itemView.findViewById(R.id.tv_keyword);
                 username = itemView.findViewById(R.id.tv_username);
                 number = itemView.findViewById(R.id.tv_volume);
-                ll_searches_view = itemView.findViewById(R.id.ll_searches_view);
-                ll_buttons = itemView.findViewById(R.id.ll_buttons);
                 searches_more = itemView.findViewById(R.id.tv_searches_more);
                 viewSwitcher = itemView.findViewById(R.id.vs_game);
                 more = itemView.findViewById(R.id.bt_more);
                 less = itemView.findViewById(R.id.bt_less);
                 background = itemView.findViewById(R.id.iv_image);
                 tv_category = itemView.findViewById(R.id.tv_category);
-                cardImage = itemView.findViewById(R.id.card_image);
                 tv_attribution = itemView.findViewById(R.id.tv_attribution);
             }
         }
