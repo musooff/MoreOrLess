@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.footballnukes.moreorlessfootballers.HomeActivity"
+        <activity android:name=".HomeActivity"
             android:screenOrientation="portrait">
 
 

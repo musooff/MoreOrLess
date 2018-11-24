@@ -1,14 +1,12 @@
 package com.footballnukes.moreorlessfootballers.updater.network
 
 import com.footballnukes.moreorlessfootballers.updater.model.InstaResult
-import com.footballnukes.moreorlessfootballers.updater.model.Original
 import com.footballnukes.moreorlessfootballers.updater.model.WikiTitle
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import io.reactivex.Flowable
-import io.reactivex.Observable
 
 
 /**

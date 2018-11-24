@@ -1,10 +1,8 @@
 package com.footballnukes.moreorlessfootballers.updater.network
 
 import com.footballnukes.moreorlessfootballers.updater.model.InstaResult
-import com.footballnukes.moreorlessfootballers.updater.model.Original
 import com.footballnukes.moreorlessfootballers.updater.model.WikiTitle
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import retrofit2.http.Query
 import retrofit2.http.GET
 

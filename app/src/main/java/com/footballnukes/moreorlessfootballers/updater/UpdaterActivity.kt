@@ -8,6 +8,7 @@ import android.util.Pair
 import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.footballnukes.moreorlessfootballers.R
 import com.footballnukes.moreorlessfootballers.beautifiers.GameButton
 import com.footballnukes.moreorlessfootballers.game.Player
@@ -22,24 +23,13 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_updater.*
 import org.jsoup.Jsoup
-import android.os.AsyncTask
-import com.footballnukes.moreorlessfootballers.updater.model.WikiTitle
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import io.reactivex.Completable
 import io.reactivex.Observable
 import org.apache.commons.lang3.StringUtils
-import org.intellij.lang.annotations.Flow
-import org.json.JSONObject
-import org.jsoup.nodes.Document
-import java.io.BufferedInputStream
-import java.io.IOException
 import java.lang.IllegalStateException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.net.URLDecoder
-import java.util.concurrent.Callable
 
 
 /**
